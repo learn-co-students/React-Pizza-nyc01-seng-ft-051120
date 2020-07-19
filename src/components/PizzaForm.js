@@ -1,16 +1,55 @@
-import React from "react"
+import React, { Component } from 'react';
 
-const PizzaForm = () => {
+class PizzaForm extends Component {
+ state = {
+   pizza: this.props.pizza,
+   topping: "pplp",
+   size: this.props.pizza.size,
+   vegetarian: this.props.pizza.vegetarian
+ }
+
+componentDidUpdate(prevProps) {
+ if (this.props.pizza !== prevProps.pizza) {
+  this.updatePizza(this.props)
+ }
+}
+
+updatePizza = e => {
+this.setState({
+  topping: e.pizza.topping,
+  size: e.pizza.size,
+  vegetarian: e.pizza.vegetarian
+ })
+}
+
+handleToppingChange = e => {
+  this.setState({ topping: e.target.value })
+}
+
+handleSizeChange = e => {
+  this.setState({ size: e.target.value })
+}
+
+handleVegetarianChange = e => {
+
+  this.state.vegetarian ?
+  this.setState({ vegetarian: false })
+  :
+  this.setState({ vegetarian: true })
+}
+
+
+render() {
+    let topping = this.state.pizza.toppings
+  console.log(this.state)
+  console.log(this.props)
   return(
       <div className="form-row">
         <div className="col-5">
-            <input type="text" className="form-control" placeholder="Pizza Topping" value={
-                //Pizza Topping Should Go Here
-                null
-              }/>
+            <input onChange={this.handleToppingChange}type="text" className="form-control" placeholder="Pizza Topping" value={this.state.topping}/>
         </div>
         <div className="col">
-          <select value={null} className="form-control">
+          <select onChange={this.handleSizeChange} value={this.state.size} className="form-control">
             <option value="Small">Small</option>
             <option value="Medium">Medium</option>
             <option value="Large">Large</option>
@@ -18,13 +57,13 @@ const PizzaForm = () => {
         </div>
         <div className="col">
           <div className="form-check">
-            <input className="form-check-input" type="radio" value="Vegetarian" checked={null}/>
+            <input onChange={this.handleVegetarianChange} className="form-check-input" type="radio" value="Vegetarian" checked={this.state.vegetarian}/>
             <label className="form-check-label">
               Vegetarian
             </label>
           </div>
           <div className="form-check">
-            <input className="form-check-input" type="radio" value="Not Vegetarian" checked={null}/>
+            <input onChange={this.handleVegetarianChange} className="form-check-input" type="radio" value="Not Vegetarian" checked={!this.state.vegetarian}/>
             <label className="form-check-label">
               Not Vegetarian
             </label>
@@ -35,7 +74,8 @@ const PizzaForm = () => {
         </div>
       </div>
 
-  )
-}
+   )
+  }
 
+}
 export default PizzaForm
