@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 class PizzaForm extends Component {
  state = {
    pizza: this.props.pizza,
-   topping: "pplp",
+   topping: this.props.pizza.topping,
    size: this.props.pizza.size,
    vegetarian: this.props.pizza.vegetarian
  }
@@ -16,6 +16,7 @@ componentDidUpdate(prevProps) {
 
 updatePizza = e => {
 this.setState({
+  pizza: e.pizza,
   topping: e.pizza.topping,
   size: e.pizza.size,
   vegetarian: e.pizza.vegetarian
@@ -40,9 +41,6 @@ handleVegetarianChange = e => {
 
 
 render() {
-    let topping = this.state.pizza.toppings
-  console.log(this.state)
-  console.log(this.props)
   return(
       <div className="form-row">
         <div className="col-5">
@@ -70,7 +68,7 @@ render() {
           </div>
         </div>
         <div className="col">
-          <button type="submit" className="btn btn-success" onClick={console.log}>Submit</button>
+          <button type="submit" className="btn btn-success" onClick={()=> this.props.submitEdit(this.state)}>Submit</button>
         </div>
       </div>
 

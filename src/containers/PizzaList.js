@@ -9,6 +9,12 @@ class PizzaList extends Component {
     this.fetchPizzas()
   }
 
+  componentDidUpdate(prevProps) {
+   if (this.props.pizza !== prevProps.pizza) {
+    this.fetchPizzas()
+   }
+  }
+
 fetchPizzas(){
   fetch("http://localhost:3000/pizzas")
   .then(res => res.json())
