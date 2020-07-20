@@ -2,19 +2,28 @@ import React from "react"
 
 class PizzaForm extends React.Component {
   
+ 
+
   state = {
     topping: "",
     size: null,
-    vegetarian: null,
-    newPizza: []
+    vegetarian: null
 
+  }
+
+  componentDidUpdate(prevProps){
+    if (prevProps.pizza.id !== this.props.pizza.id){
+      this.setState({
+        ...this.state,
+        topping: this.props.pizza.topping
+      })   
+    } 
   }
 
   handleToppingChange = (e) => {
     this.setState({
       topping: e.target.value
     })
-    console.log(this.state)
   }
 
   handleSizeChange = (e) => {
@@ -31,22 +40,30 @@ class PizzaForm extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
-    let target = e.target.value
-    console.log(target);
-    // let pizzaToAdd 
-    // this.setState({
-    //   newPizza: [...this.state.newPizza, pizzaToAdd]
-    // })
+    console.log(e.target, this.props.pizza.id)
+    fetch(`http://localhost:3000/pizzas/${this.props.pizza.id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type':'application/json'
+      },
+      body: JSON.stringify({
+        topping: e.target.topping.value,
+        size: e.target.size.value
+      })
+    })
+    .then(this.props.getPizzas)
+   
   }
    
   render(){
+    console.log(this.state)
     return(
-        <div className="form-row" onSubmit={this.handleSubmit}>
+        <form className="form-row" onSubmit={this.handleSubmit}>
           <div className="col-5">
-              <input type="text" className="form-control" placeholder="Pizza Topping" value={this.state.topping} onChange={this.handleToppingChange}/>
+              <input type="text" className="form-control" placeholder="Pizza Topping" name='topping' value={this.state.topping} onChange={this.handleToppingChange}/>
           </div>
           <div className="col">
-            <select value={this.state.value} onChange={this.handleSizeChange} className="form-control">
+            <select value={this.state.value} onChange={this.handleSizeChange} className="form-control" name='size'>
               <option value="Small">Small</option>
               <option value="Medium">Medium</option>
               <option value="Large">Large</option>
@@ -69,7 +86,7 @@ class PizzaForm extends React.Component {
           <div className="col">
             <button type="submit" className="btn btn-success">Submit</button>
           </div>
-        </div>
+        </form>
   
     )
   }

@@ -6,10 +6,14 @@ class App extends Component {
 
   state = {
     pizzas: [],
-    editPizzas: []
+    editPizza: {}
   }
-
   componentDidMount(){
+    this.getPizzas()
+  }
+  
+
+  getPizzas = () => {
     fetch('http://localhost:3000/pizzas')
     .then(r => r.json())
     .then(data => {
@@ -19,36 +23,30 @@ class App extends Component {
       })
     })
   }
-  
   // find pizza that is clicked from pizzas(state) 
   // fill the form with the values
 
-  handleClick = (id) => {
-    let copyPizzas = [...this.state.pizzas]
-    let selectedPizza = copyPizzas.find(pId => pId.id === id)
+  findPizzaToEdit = (id) => {
+    let selectedPizza = this.state.pizzas.find(pId => pId.id === id)
     this.setState({
-      editPizzas: selectedPizza
+      editPizza: selectedPizza
     })
   }
 
-  // renderPizza = (e) => {
-  // let newPizzas = [...this.state.pizzas]
-  
-  // }
 
   render() {
     console.log(this.state)
-    let pizzaToChange = this.state.editPizzas
+    let pizzaToChange = this.state.editPizza
     return (
       <Fragment>
         <Header/>
-        <PizzaForm 
-        pizza={pizzaToChange}
-        // newPizza={this.renderPizza}
+        <PizzaForm
+          pizza={pizzaToChange}
+          getPizzas={this.getPizzas}
         />
         <PizzaList 
           pizzas={this.state.pizzas}
-          handleClick={this.handleClick}
+          findPizzaToEdit={this.findPizzaToEdit}
         />
       </Fragment>
     );

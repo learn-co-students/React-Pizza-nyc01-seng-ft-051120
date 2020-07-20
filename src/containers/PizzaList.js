@@ -23,7 +23,7 @@ class PizzaList extends Component {
             topping={pizza.topping} 
             size={pizza.size}
             vegetarian={pizza.vegetarian}
-            handleClick={this.props.handleClick}
+            findPizzaToEdit={this.props.findPizzaToEdit}
             />
           )}
         </tbody>
